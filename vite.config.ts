@@ -28,6 +28,9 @@ function safeMcpPlugin() {
 }
 
 export default defineConfig({
+  nitro: {
+    preset: "netlify",
+  },
   tanstackStart: {
     server: { entry: "server" },
   },
