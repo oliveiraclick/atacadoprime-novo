@@ -9,9 +9,11 @@ import { mcpPlugin } from "@lovable.dev/mcp-js/stacks/tanstack/vite";
 import { legacyCssPlugin } from "./vite-legacy-css";
 
 function safeMcpPlugin() {
+  if (process.env.NETLIFY || process.env.CI || process.env.NODE_ENV === "production") {
+    return null;
+  }
   try {
     const plugin = mcpPlugin();
-    // No Windows, o mcpPlugin original pode falhar por causa da comparação C:/ vs C:\
     return {
       ...plugin,
       configResolved(...args: any[]) {
@@ -28,9 +30,7 @@ function safeMcpPlugin() {
 }
 
 export default defineConfig({
-  nitro: {
-    preset: "netlify",
-  },
+  nitro: false,
   tanstackStart: {
     server: { entry: "server" },
   },
